@@ -3,7 +3,7 @@
 ![Spring_Boot](https://img.shields.io/badge/Spring_Boot-v3.1.0-green.svg?logo=spring)
 ![SQLite](https://img.shields.io/badge/SQLite-blue?logo=SQLite)
 
-SQLite를 사용하는 To-do List 웹 서버 프로젝트
+SQLite를 사용하는 To-do List 웹 어플리케이션 서버(Web Application Server, WAS) 프로젝트
 
 ### Endpoints
 
