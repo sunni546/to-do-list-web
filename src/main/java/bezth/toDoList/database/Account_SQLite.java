@@ -31,7 +31,7 @@ public class Account_SQLite {
         } catch (SQLException e) {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
 
-            // 실행 시 SQL 예외 발생 후 다시 실행할 경우
+            // SQL 예외 발생 후 다시 실행할 경우
             // org.sqlite.SQLiteException: [SQLITE_BUSY] The database file is locked (database is locked) 예외 수정
             try {
                 if (stmt != null) stmt.close();
