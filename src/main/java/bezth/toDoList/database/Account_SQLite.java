@@ -40,7 +40,7 @@ public class Account_SQLite {
                 throw new RuntimeException(se);
             }
 
-            //  ID의 Unique 오류
+            // ID의 Unique 관련 예외 발생
             if (e.getMessage().equals("[SQLITE_CONSTRAINT_UNIQUE] A UNIQUE constraint failed (UNIQUE constraint failed: accounts.id)")) {
                 throw new AccountIDAlreadyExistException(String.format("ID[%s] is already exist", id));
             }
