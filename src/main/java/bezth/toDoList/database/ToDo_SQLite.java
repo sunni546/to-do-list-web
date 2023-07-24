@@ -2,10 +2,7 @@ package bezth.toDoList.database;
 
 import org.json.simple.JSONObject;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -31,9 +28,16 @@ public class ToDo_SQLite {
             stmt.close();
             connection.commit();
             connection.close();
-        } catch ( Exception e ) {
-            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
-            System.exit(0);
+        } catch (SQLException e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            try {
+                if (stmt != null) stmt.close();
+                if (connection != null) connection.close();
+            } catch (SQLException se) {
+                throw new RuntimeException(se);
+            }
+        } catch (Exception e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
         }
     }
 
@@ -67,9 +71,16 @@ public class ToDo_SQLite {
             rs.close();
             stmt.close();
             connection.close();
+        } catch (SQLException e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            try {
+                if (stmt != null) stmt.close();
+                if (connection != null) connection.close();
+            } catch (SQLException se) {
+                throw new RuntimeException(se);
+            }
         } catch (Exception e) {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
-            System.exit(0);
         }
         JSONObject jsonObject = new JSONObject(map);
         return jsonObject;
@@ -86,7 +97,7 @@ public class ToDo_SQLite {
 
             stmt = connection.createStatement();
 
-            String sql = "UPDATE todolist set ";
+            String sql = "UPDATE todolist SET ";
             if (title != null) {
                 sql += "title = '" + title.get() + "',";
             } if (content != null) {
@@ -95,16 +106,23 @@ public class ToDo_SQLite {
                 sql += "done = " + ((Boolean) done.get()? 1 : 0) + ",";
 
             } sql = sql.substring(0, sql.length() - 1);     // 마지막 "," 제거
-            sql += " where ID = " + id + ";";
+            sql += " WHERE ID = " + id + ";";
 
             stmt.executeUpdate(sql);
             connection.commit();
 
             stmt.close();
             connection.close();
-        } catch ( Exception e ) {
-            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
-            System.exit(0);
+        } catch (SQLException e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            try {
+                if (stmt != null) stmt.close();
+                if (connection != null) connection.close();
+            } catch (SQLException se) {
+                throw new RuntimeException(se);
+            }
+        } catch (Exception e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
         }
     }
 
@@ -118,15 +136,22 @@ public class ToDo_SQLite {
             connection.setAutoCommit(false);
 
             stmt = connection.createStatement();
-            String sql = "DELETE from todolist where ID = " + id + ";";
+            String sql = "DELETE FROM todolist WHERE ID = " + id + ";";
             stmt.executeUpdate(sql);
             connection.commit();
 
             stmt.close();
             connection.close();
-        } catch ( Exception e ) {
-            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
-            System.exit(0);
+        } catch (SQLException e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            try {
+                if (stmt != null) stmt.close();
+                if (connection != null) connection.close();
+            } catch (SQLException se) {
+                throw new RuntimeException(se);
+            }
+        } catch (Exception e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
         }
     }
 }
