@@ -32,9 +32,4 @@ public class ToDoController {
     public void deleteToDo(@PathVariable("id") int id) {
         toDoList.deleteDB(id);
     }
-
-    @GetMapping("/test")    // 테스트 용
-    public String test() {
-        return "***test***";
-    }
 }
