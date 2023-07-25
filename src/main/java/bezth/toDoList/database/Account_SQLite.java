@@ -2,6 +2,8 @@ package bezth.toDoList.database;
 
 import bezth.toDoList.AccountIDAlreadyExistException;
 import org.json.simple.JSONObject;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.sql.*;
 import java.util.HashMap;
@@ -71,7 +73,7 @@ public class Account_SQLite {
                 account.put("id", id);
                 String password = rs.getString("password");
                 account.put("password", password);
-                map.put("account" + pk, account);
+                map.put("Account" + pk, account);
             }
 
             rs.close();
@@ -92,9 +94,8 @@ public class Account_SQLite {
         return jsonObject;
     }
 
-    /*
-    // RESET
-    public void resetDB() {
+    // ID와 비밀번호를 가지고 PK 찾기
+    public int findPK(String id, String password) {
         Connection connection = null;
         Statement stmt = null;
         try {
@@ -103,16 +104,37 @@ public class Account_SQLite {
             connection.setAutoCommit(false);
 
             stmt = connection.createStatement();
-            String sql = "DROP TABLE accounts;" +
-                    "CREATE TABLE accounts (pk INTEGER PRIMARY KEY AUTOINCREMENT, id TEXT UNIQUE, password TEXT NOT NULL);";
-            stmt.executeUpdate(sql);
-            connection.commit();
+            ResultSet rs = stmt.executeQuery("SELECT * FROM accounts;");
 
+            while (rs.next()) {
+                int rs_pk = rs.getInt("pk");
+                String rs_id = rs.getString("id");
+                String rs_password = rs.getString("password");
+
+                if (rs_id.equals(id) & rs_password.equals(password)) {
+                    rs.close();
+                    stmt.close();
+                    connection.close();
+                    return rs_pk;
+                }
+            }
+
+            rs.close();
             stmt.close();
             connection.close();
+        } catch (SQLException e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            try {
+                if (stmt != null) stmt.close();
+                if (connection != null) connection.close();
+            } catch (SQLException se) {
+                throw new RuntimeException(se);
+            }
         } catch (Exception e) {
-            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
         }
+
+        // ID/PW에 해당하는 사용자가 존재하지 않는 경우
+        throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
     }
-     */
 }
