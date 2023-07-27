@@ -4,6 +4,7 @@ import bezth.toDoList.database.Account_SQLite;
 import bezth.toDoList.database.ToDo_SQLite;
 import org.json.simple.JSONObject;
 
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.Optional;
 
@@ -18,7 +19,10 @@ public class ToDoService {
     }
 
     public JSONObject readToDo(HashMap<String, String> mapAccount) {
-        int account_pk = accountSqLite.findPK(mapAccount.get("ID"), mapAccount.get("PW"));
+        // {ID}:{PW}
+        String[] arrAccount = new String(Base64.getDecoder().decode(mapAccount.get("accountB64")))
+                .split(":");
+        int account_pk = accountSqLite.findPK(arrAccount[0], arrAccount[1]);
         return toDoSqLite.selectDB(account_pk);
     }
 
