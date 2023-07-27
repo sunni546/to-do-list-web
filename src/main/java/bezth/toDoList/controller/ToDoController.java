@@ -18,8 +18,8 @@ public class ToDoController {
     }
 
     @GetMapping("/todos")    // '할 일' 목록 조회
-    public JSONObject readToDo(@RequestBody HashMap<String, String> mapAccount) {
-        return toDoService.readToDo(mapAccount);
+    public JSONObject readToDo(@RequestHeader("Authorization") String authorization) {
+        return toDoService.readToDo(authorization);
     }
 
     @PatchMapping("/todos/{id}")  // '할 일' 수정

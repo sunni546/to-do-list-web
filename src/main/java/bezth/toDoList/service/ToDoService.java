@@ -18,9 +18,9 @@ public class ToDoService {
         toDoSqLite.insertDB(mapToDo.get("title"), mapToDo.get("content"), account_pk);
     }
 
-    public JSONObject readToDo(HashMap<String, String> mapAccount) {
+    public JSONObject readToDo(String authorization) {
         // {ID}:{PW}
-        String[] arrAccount = new String(Base64.getDecoder().decode(mapAccount.get("accountB64")))
+        String[] arrAccount = new String(Base64.getDecoder().decode(authorization))
                 .split(":");
         int account_pk = accountSqLite.findPK(arrAccount[0], arrAccount[1]);
         return toDoSqLite.selectDB(account_pk);
