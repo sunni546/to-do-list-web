@@ -44,7 +44,7 @@ public class Account_SQLite {
 
             // ID의 Unique 관련 예외 발생
             if (e.getMessage().equals("[SQLITE_CONSTRAINT_UNIQUE] A UNIQUE constraint failed (UNIQUE constraint failed: accounts.id)")) {
-                throw new AccountIDAlreadyExistException(String.format("ID[%s] is already exist", id));
+                throw new AccountIDAlreadyExistException(String.format("ID[%s] is already exist", id));     // status code : 400
             }
         } catch (Exception e) {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
@@ -135,6 +135,6 @@ public class Account_SQLite {
         }
 
         // ID/PW에 해당하는 사용자가 존재하지 않는 경우
-        throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
+        throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);     // status code : 401
     }
 }

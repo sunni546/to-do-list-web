@@ -1,6 +1,5 @@
 package bezth.toDoList.database;
 
-import bezth.toDoList.AccountIDAlreadyExistException;
 import org.json.simple.JSONObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
@@ -111,7 +110,7 @@ public class ToDo_SQLite {
             if (rs_account_id == 0) {
                 stmt.close();
                 connection.close();
-                throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND);    // status code : 404
             }
 
             // 수정할 '할 일'의 account_id(rs_account_id)와 요청받은 계정의 pk(account_id)가 같은 경우
@@ -132,7 +131,8 @@ public class ToDo_SQLite {
             } else {    // 사용자에게 권한이 없는 경우
                 stmt.close();
                 connection.close();
-                throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+                // throw new ResponseStatusException(HttpStatus.FORBIDDEN);    // status code : 403
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND);    // status code : 404
             }
 
             stmt.close();
@@ -172,7 +172,7 @@ public class ToDo_SQLite {
             if (rs_account_id == 0) {
                 stmt.close();
                 connection.close();
-                throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND);    // status code : 404
             }
 
             // 삭제할 '할 일'의 account_id(rs_account_id)와 요청받은 계정의 pk(account_id)가 같은 경우
@@ -183,7 +183,8 @@ public class ToDo_SQLite {
             } else {    // 사용자에게 권한이 없는 경우
                 stmt.close();
                 connection.close();
-                throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+                // throw new ResponseStatusException(HttpStatus.FORBIDDEN);    // status code : 403
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND);    // status code : 404
             }
 
             stmt.close();
