@@ -102,8 +102,7 @@ public class ToDo_SQLite {
 
             // 수정할 '할 일'의 account_id 구하기
             ResultSet rs = stmt.executeQuery("SELECT account_id FROM todolist WHERE ID = " + id + ";");
-            int rs_account_id = 0;
-            rs_account_id = rs.getInt("account_id");
+            int rs_account_id = rs.getInt("account_id");
             rs.close();
 
             // 수정할 '할 일'이 존재하지 않는 경우
@@ -164,8 +163,7 @@ public class ToDo_SQLite {
 
             // 삭제할 '할 일'의 account_id 구하기
             ResultSet rs = stmt.executeQuery("SELECT account_id FROM todolist WHERE ID = " + id + ";");
-            int rs_account_id = 0;
-            rs_account_id = rs.getInt("account_id");
+            int rs_account_id = rs.getInt("account_id");
             rs.close();
 
             // 삭제할 '할 일'이 존재하지 않는 경우
