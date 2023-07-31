@@ -2,6 +2,7 @@ package bezth.toDoList.controller;
 
 import bezth.toDoList.service.ToDoService;
 import org.json.simple.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -10,7 +11,8 @@ import java.util.Optional;
 @RestController
 public class ToDoController {
 
-    private final ToDoService toDoService = new ToDoService();
+    @Autowired
+    private ToDoService toDoService;
 
     @PostMapping("/todos")  // '할 일' 추가
     public void createToDo(@RequestBody HashMap<String, String> mapToDo,

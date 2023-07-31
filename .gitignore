@@ -197,6 +197,7 @@ bin/
 out/
 !**/src/main/**/out/
 !**/src/test/**/out/
+application-jwt.properties
 
 ### NetBeans ###
 /nbproject/private/
