@@ -6,10 +6,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 public class AccountService {
 
     private final Account_SQLite accountSqLite = new Account_SQLite();
+    public static final Map<String, Integer> mapUUID = new HashMap<>();
 
     public void createAccount(HashMap<String, String> mapAccount) {
        /*
@@ -23,5 +26,18 @@ public class AccountService {
 
     public JSONObject readAccount() {
         return accountSqLite.selectDB();
+    }
+
+    public void authAccount(HashMap<String, String> mapAccount) {
+        int pk = accountSqLite.findPK(mapAccount.get("id"), mapAccount.get("password"));
+
+        // UUID Random 생성
+        UUID uuid = UUID.randomUUID();
+        String strUUID = uuid.toString().replace("-", "");
+
+        mapUUID.put(strUUID, pk);
+
+        // 생성한 UUID 출력
+        // System.out.println(pk + " strUUID" + ": " + strUUID);
     }
 }
