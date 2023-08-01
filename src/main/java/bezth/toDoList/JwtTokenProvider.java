@@ -43,7 +43,7 @@ public class JwtTokenProvider {
         return (int) claims.get("account_pk");
     }
 
-    // Jwt 토큰 유효성 검사
+    // JWT 토큰 유효성 검사
     public void validateToken(String token) {
         try {
             Jwts.parser().setSigningKey(JWT_SECRET).parseClaimsJws(token);
