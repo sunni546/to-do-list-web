@@ -17,14 +17,22 @@ public class JwtTokenProvider {
     @Value("${secret.key}")
     private String JWT_SECRET;
 
-    public String makeJwtToken(int pk) {
-        Date now = new Date();
+    public String makeJwtToken(int pk, String token) {
+        Date iat = new Date();
+        Date exp = null;
+        switch (token) {
+            case "accessToken" -> exp = new Date(iat.getTime() + Duration.ofMinutes(30).toMillis());    // 30분
+            case "refreshToken" -> exp = new Date(iat.getTime() + Duration.ofDays(30).toMillis());      // 30일
+            default -> {
+            }
+        }
 
         return Jwts.builder()
                 .setHeaderParam(Header.TYPE, Header.JWT_TYPE)   // Header 타입(typ)
-                .setIssuedAt(now)   // 토큰 발급 시간(iat), Date 타입만
-                .setExpiration(new Date(now.getTime() + Duration.ofMinutes(30).toMillis())) // 토큰 만료 시간(exp), Date 타입만
+                .setIssuedAt(iat)   // 토큰 발급 시간(iat), Date 타입만
+                .setExpiration(exp) // 토큰 만료 시간(exp), Date 타입만
                 .claim("account_pk", pk)    // 비공개(private) 클레임
+                .claim("tokenType", token)    // 비공개(private) 클레임
                 .signWith(SignatureAlgorithm.HS256, JWT_SECRET)   // 해싱 알고리즘과 시크릿 키 설정
                 .compact();
     }
@@ -41,6 +49,21 @@ public class JwtTokenProvider {
     public int findAccountIdByJwt(String token){
         Claims claims = parseJwtToken(token);
         return (int) claims.get("account_pk");
+    }
+
+    public String findTokenTypeByJwt(String token){
+        Claims claims = parseJwtToken(token);
+        return claims.get("tokenType").toString();
+    }
+
+    public Date findExpirationByJwt(String token){
+        Claims claims = parseJwtToken(token);
+        return claims.getExpiration();
+    }
+
+    public long getExpPeriodByJwt(String token){
+        Date now = new Date();
+        return findExpirationByJwt(token).getTime() - now.getTime();
     }
 
     // JWT 토큰 유효성 검사

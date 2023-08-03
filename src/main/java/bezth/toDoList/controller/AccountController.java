@@ -24,7 +24,12 @@ public class AccountController {
     }
 
     @PostMapping("/auth")  // 로그인
-    public String authAccount(@RequestBody HashMap<String, String> mapAccount) {
+    public JSONObject authAccount(@RequestBody HashMap<String, String> mapAccount) {
         return accountService.authAccount(mapAccount);
+    }
+
+    @PostMapping("/refresh")  // Refresh
+    public JSONObject refreshAccount(@RequestHeader("Authorization") String authorization) {
+        return accountService.refreshAccount(authorization);
     }
 }
