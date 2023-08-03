@@ -2,6 +2,7 @@ package bezth.toDoList.database;
 
 import bezth.toDoList.AccountIDAlreadyExistException;
 import org.json.simple.JSONObject;
+import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -15,6 +16,9 @@ public class Account_SQLite {
 
     // CREATE(INSERT)
     public void insertDB(String id, String password) {
+        // hash : 비밀번호 암호화
+        String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
+
         Connection connection = null;
         Statement stmt = null;
         try {
@@ -24,7 +28,7 @@ public class Account_SQLite {
 
             stmt = connection.createStatement();
             String sql = "INSERT INTO accounts (id, password) " +
-                    "VALUES ('" + id + "', '" + password + "');";
+                    "VALUES ('" + id + "', '" + hashedPassword + "');";
             stmt.executeUpdate(sql);
 
             connection.commit();
@@ -48,6 +52,12 @@ public class Account_SQLite {
             }
         } catch (Exception e) {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            try {
+                if (stmt != null) stmt.close();
+                if (connection != null) connection.close();
+            } catch (SQLException se) {
+                throw new RuntimeException(se);
+            }
         }
     }
 
@@ -79,7 +89,7 @@ public class Account_SQLite {
             rs.close();
             stmt.close();
             connection.close();
-        } catch (SQLException e) {
+        } catch (Exception e) {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
             try {
                 if (stmt != null) stmt.close();
@@ -87,8 +97,6 @@ public class Account_SQLite {
             } catch (SQLException se) {
                 throw new RuntimeException(se);
             }
-        } catch (Exception e) {
-            System.err.println(e.getClass().getName() + ": " + e.getMessage());
         }
         JSONObject jsonObject = new JSONObject(map);
         return jsonObject;
@@ -111,18 +119,20 @@ public class Account_SQLite {
                 String rs_id = rs.getString("id");
                 String rs_password = rs.getString("password");
 
-                if (rs_id.equals(id) & rs_password.equals(password)) {
-                    rs.close();
-                    stmt.close();
-                    connection.close();
-                    return rs_pk;
+                if (rs_id.equals(id)) {
+                    if (BCrypt.checkpw(password, rs_password)){
+                        rs.close();
+                        stmt.close();
+                        connection.close();
+                        return rs_pk;
+                    }
                 }
             }
 
             rs.close();
             stmt.close();
             connection.close();
-        } catch (SQLException e) {
+        } catch (Exception e) {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
             try {
                 if (stmt != null) stmt.close();
@@ -130,8 +140,6 @@ public class Account_SQLite {
             } catch (SQLException se) {
                 throw new RuntimeException(se);
             }
-        } catch (Exception e) {
-            System.err.println(e.getClass().getName() + ": " + e.getMessage());
         }
 
         // ID/PW에 해당하는 사용자가 존재하지 않는 경우

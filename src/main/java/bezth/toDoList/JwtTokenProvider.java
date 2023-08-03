@@ -11,10 +11,10 @@ import java.time.Duration;
 import java.util.Date;
 
 @Component
-@PropertySource("classpath:application-keys.properties")
+@PropertySource("classpath:application-jwt.properties")
 public class JwtTokenProvider {
 
-    @Value("${jwt.secret.key}")
+    @Value("${secret.key}")
     private String JWT_SECRET;
 
     public String makeJwtToken(int pk, String token) {

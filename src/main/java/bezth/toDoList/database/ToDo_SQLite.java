@@ -30,7 +30,7 @@ public class ToDo_SQLite {
             stmt.close();
             connection.commit();
             connection.close();
-        } catch (SQLException e) {
+        } catch (Exception e) {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
             try {
                 if (stmt != null) stmt.close();
@@ -38,8 +38,6 @@ public class ToDo_SQLite {
             } catch (SQLException se) {
                 throw new RuntimeException(se);
             }
-        } catch (Exception e) {
-            System.err.println(e.getClass().getName() + ": " + e.getMessage());
         }
     }
 
@@ -74,7 +72,7 @@ public class ToDo_SQLite {
             rs.close();
             stmt.close();
             connection.close();
-        } catch (SQLException e) {
+        } catch (Exception e) {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
             try {
                 if (stmt != null) stmt.close();
@@ -82,8 +80,6 @@ public class ToDo_SQLite {
             } catch (SQLException se) {
                 throw new RuntimeException(se);
             }
-        } catch (Exception e) {
-            System.err.println(e.getClass().getName() + ": " + e.getMessage());
         }
         JSONObject jsonObject = new JSONObject(map);
         return jsonObject;
@@ -233,7 +229,7 @@ public class ToDo_SQLite {
             rs.close();
             stmt.close();
             connection.close();
-        } catch (SQLException e) {
+        } catch (Exception e) {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
             try {
                 if (stmt != null) stmt.close();
@@ -241,8 +237,6 @@ public class ToDo_SQLite {
             } catch (SQLException se) {
                 throw new RuntimeException(se);
             }
-        } catch (Exception e) {
-            System.err.println(e.getClass().getName() + ": " + e.getMessage());
         }
         JSONObject jsonObject = new JSONObject(map);
         return jsonObject;
