@@ -2,8 +2,8 @@ package bezth.toDoList.database;
 
 import bezth.toDoList.AccountIDAlreadyExistException;
 import org.json.simple.JSONObject;
-import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.sql.*;
@@ -13,11 +13,12 @@ import java.util.Map;
 public class Account_SQLite {
 
     private final String urlDB = "jdbc:sqlite:toDoListWeb.sqlite";
+    private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
     // CREATE(INSERT)
     public void insertDB(String id, String password) {
         // hash : 비밀번호 암호화
-        String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
+        String hashedPassword = encoder.encode(password);
 
         Connection connection = null;
         Statement stmt = null;
@@ -120,7 +121,7 @@ public class Account_SQLite {
                 String rs_password = rs.getString("password");
 
                 if (rs_id.equals(id)) {
-                    if (BCrypt.checkpw(password, rs_password)){
+                    if (encoder.matches(password, rs_password)){
                         rs.close();
                         stmt.close();
                         connection.close();

@@ -20,6 +20,7 @@ public class AccountService {
     @Autowired
     private JwtTokenProvider jwtTokenProvider;
 
+    // 회원가입
     public void createAccount(HashMap<String, String> mapAccount) {
         accountSqLite.insertDB(mapAccount.get("id"), mapAccount.get("password"));
     }
@@ -28,6 +29,7 @@ public class AccountService {
         return accountSqLite.selectDB();
     }
 
+    // 로그인
     public JSONObject authAccount(HashMap<String, String> mapAccount) {
         int account_pk = accountSqLite.findPK(mapAccount.get("id"), mapAccount.get("password"));
 
