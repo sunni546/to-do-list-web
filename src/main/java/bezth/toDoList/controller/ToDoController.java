@@ -1,18 +1,19 @@
 package bezth.toDoList.controller;
 
 import bezth.toDoList.service.ToDoService;
+import lombok.RequiredArgsConstructor;
 import org.json.simple.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Optional;
 
 @RestController
+@RequestMapping("/users/me")
+@RequiredArgsConstructor
 public class ToDoController {
 
-    @Autowired
-    private ToDoService toDoService;
+    private final ToDoService toDoService;
 
     @PostMapping("/todos")  // '할 일' 추가
     public void createToDo(@RequestBody HashMap<String, String> mapToDo,

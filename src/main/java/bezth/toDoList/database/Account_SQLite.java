@@ -1,6 +1,6 @@
 package bezth.toDoList.database;
 
-import bezth.toDoList.AccountIDAlreadyExistException;
+import bezth.toDoList.exception.AccountIDAlreadyExistException;
 import org.json.simple.JSONObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
