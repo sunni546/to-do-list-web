@@ -9,12 +9,14 @@ SQLite를 사용하는 To-do List 웹 어플리케이션 서버(Web Application 
 
 | Method | Url | Decription |
 | ------ | --- | ---------- |
-| POST   |/todos     | '할 일 추가' 기능 |
-| GET    |/todos     | '할 일 목록 조회' 기능 |
-| PATCH  |/todos/{id}| '할 일 수정' 기능 |
-| DELETE |/todos/{id}| '할 일 삭제' 기능 |
-| POST   |/accounts     | '계정 추가' 기능 |
-| GET    |/accounts     | '전체 계정 조회' 기능 |
+| POST   | /users/me/todos     | '할 일' 추가 기능     |
+| GET    | /users/me/todos     | '할 일' 목록 조회 기능 |
+| PATCH  | /users/me/todos/{id}| '할 일' 수정 기능     |
+| DELETE | /users/me/todos/{id}| '할 일' 삭제 기능     |
+| POST   | /accounts    | '계정' 추가 기능     |
+| GET    | /accounts    | 전체 '계정' 조회 기능 |
+| POST   | /auth        | '계정' 로그인 기능    |
+| POST   | /refresh     | '계정' Refresh 기능 |
 
 ### Database
 #### '할 일' 테이블(todolist)
